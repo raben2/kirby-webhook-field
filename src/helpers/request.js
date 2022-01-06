@@ -13,6 +13,12 @@ export function request(url, method, successHandler, errorHandler, payload) {
 
   if (payload) {
     http.setRequestHeader("Content-Type", "application/json");
+    if (accept_header) {
+      http.setRequestHeader(accept_header)
+    }
+    if (auth_header) {
+      http.setRequestHeader(auth_header)
+    }
     http.send(JSON.stringify(payload));
   } else {
     http.send();

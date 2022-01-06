@@ -53,6 +53,14 @@ export default {
       type: Object,
       required: true
     },
+    accept_header: {
+      type: String,
+      requred: false
+    },
+    auth_header: {
+      type: String,
+      requried: false
+    }
     debug: Boolean,
     monochrome:  Boolean
   },
@@ -98,7 +106,7 @@ export default {
         this.log('could not reach webhook URL', true);
       };
 
-      request(url, this.hook.method, success, error, this.hook.payload);
+      request(url, this.hook.method, auth_header, accept_header, success, error, this.hook.payload);
     },
     getStatus() {
       const url = `/${this.endpoint}/${this.hook.name}/status`;
