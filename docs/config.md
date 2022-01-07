@@ -31,6 +31,8 @@ method | `String` (http method) | `'POST'` | Optional: The http method for the o
 payload | `callable` | - | Optional: The payload that will be sent to the outgoing webhook. Needs to be a closure that should return an array.
 callback | `callable` | - | Optional: A closure that will be run after the webhook was started or completed. It receices the `$status`and `$request` info. `$status` will be `'progress'`, `'error'` or `'success'`. `$request` is a `Kirby\Http\Request` object with the response from  the webhook.
 showOutdated | `Boolean` | `true` | Enable warning message if the site content has been modified since hook was last triggered.
+auth_header | `String` | `false` | Add Authorization Header to the request.
+accept_header | `String` | `false` | Add Accept Header to the request.
 
 ## Labels
 
@@ -72,6 +74,27 @@ return [
           'cta'  => 'Run again'
         ]
     ]
+```
+
+## Example for Github Repository Dispatch Call in config.php
+
+```php
+<?php
+return [
+  'pju.webhook-field.hooks' => [
+      'production' => [
+          'pju.webhook-field.endpoint' => 'webhook-4k458i90dsfug0w4',
+          'url' => 'https://api.github.com/repos/:user/:repo/dispatches',
+          'callback' => function($status) {
+              if ($status === 'error') {
+                  error_log('There was an error with the production webhook');
+              }
+          },
+          'accept_header' => 'Accept: application/vnd.github.everest-preview+json',
+          'auth_header' => 'Authorization: token :token',
+          'payload' => '{"event_type": "release"',
+      ]
+  ],
 ```
 
 # Field options
